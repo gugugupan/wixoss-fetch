@@ -65,7 +65,7 @@ function toFaq(el) {
 
 function toInfo(doc, id) {
   let info = {}
-  info.pid = doc.querySelector('.card_detail_title > p').textContent
+  info.pid = id || doc.querySelector('.card_detail_title > p').textContent
   info.timestamp = Date.now()
   info.wxid = doc.querySelector('.card_detail_title > p').textContent
   info.name = doc.querySelector('.card_detail_title > h3').firstChild.textContent
@@ -123,9 +123,9 @@ function fetchById (tar, i) {
   return fetchByUrl(tar, url, i)
 }
 
-function fetchByWXId(tar, wx_id, i) {
+function fetchByWXId(tar, wx_id) {
   let url = `http://${domain}/products/wixoss/card/card_list.php?card=card_detail&card_no=${wx_id}`
-  return fetchByUrl(tar, url, i)
+  return fetchByUrl(tar, url, undefined)
 }
 
 function fetchByUrl(tar, url, i) {
@@ -176,7 +176,7 @@ function fetchWXBox(prefix, min, max) {
   let promises = []
   for (let i = min; i <= max; i ++) {
     const wx_id = `${prefix}-${('00' + i).slice(-3)}`;
-    promises.push(fetchByWXId(tar, wx_id, i))
+    promises.push(fetchByWXId(tar, wx_id))
   }
   return Promise.all(promises)
   .then(() => {
